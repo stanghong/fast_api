@@ -68,7 +68,7 @@ async def voicebot_endpoint(
     completion = client.chat.completions.create(
         model="gpt-4-1106-preview",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": "You are a helpful assistant. return short answers"},
             {"role": "user", "content": transcript}
         ]
     )
