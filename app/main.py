@@ -13,7 +13,7 @@ from getpass import getpass
 from dotenv import load_dotenv
 load_dotenv()
 import uuid
-from pydub import AudioSegment
+
 
 import boto3
 from io import BytesIO
@@ -57,15 +57,22 @@ async def voicebot_endpoint(
 
         s3 = boto3.client('s3')
         bucket_name = 'voicebot-text-to-speech'  # Replace with your actual S3 bucket name
-        file_name = f"input_{uuid.uuid4()}.mp3"
+        file_extension = os.path.splitext(audio.filename)[1]
+        file_name = f"input_{uuid.uuid4()}{file_extension}"
         
-        # Convert WAV to MP3
-        audio = AudioSegment.from_wav(BytesIO(content))
-        mp3_buffer = BytesIO()
-        audio.export(mp3_buffer, format="mp3")
-        mp3_buffer.seek(0)
+        # Save the file in its original format
+        try:
+            # Create a BytesIO object from the content
+            file_buffer = BytesIO(content)
+            file_buffer.seek(0)
+
+            # Upload the file to S3 in its original format
+            s3.upload_fileobj(file_buffer, bucket_name, file_name)
+        except Exception as e:
+            print(f"Error uploading file to S3: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"Error uploading file to S3: {str(e)}")
         
-        s3.upload_fileobj(mp3_buffer, bucket_name, file_name)
+        print(f"Audio file uploaded to S3 in original format: {file_name}")
 
 
         # 使用 Whisper 将语音转换为文本
