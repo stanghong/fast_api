@@ -39,7 +39,7 @@ class QueryResponse(BaseModel):
 #
 @app.post("/api/voicebot/", response_model=QueryResponse)
 async def voicebot_endpoint(
-     audio: UploadFile = File(None),
+    audio: UploadFile = File(None),
     text: str = Form(None)
 ):
     
@@ -51,6 +51,11 @@ async def voicebot_endpoint(
 
         # Prepare the file as a tuple (filename, content)
         audio_data = (audio.filename, content)
+        
+        # Save the audio file locally
+        with open(audio.filename, 'wb') as f:
+            f.write(content)
+        print(f'audio file saved to {audio.filename}')
         # 使用 Whisper 将语音转换为文本
         client = OpenAI()
         transcript = client.audio.transcriptions.create(
