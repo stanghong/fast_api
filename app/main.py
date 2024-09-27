@@ -54,10 +54,15 @@ async def voicebot_endpoint(
         audio_data = (audio.filename, content)
 
         # Convert the audio content to base64
-        audio_base64 = base64.b64encode(content).decode('utf-8')
-        print(f'Audio file in base64: {audio_base64}')
+        # audio_base64 = base64.b64encode(content).decode('utf-8')
+        # print(f'Audio file in base64: {audio_base64}')
 
-        print(f'audio_data is {audio_data}')
+        
+        # Upload the audio file to S3
+        s3 = boto3.client('s3')
+        bucket_name = 'voicebot-text-to-speech'  # Replace with your actual S3 bucket name
+        file_name = f"input_{uuid.uuid4()}.wav"
+        s3.put_object(Bucket=bucket_name, Key=file_name, Body=content)
 
 
         # 使用 Whisper 将语音转换为文本
