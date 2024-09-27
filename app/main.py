@@ -21,7 +21,7 @@ OpenAI.api_key = os.environ['OPENAI_API_KEY']
 app = FastAPI()
 
 # %%
-# Set up CORS middleware options
+# Set up CORS middleware options.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # List of allowed origins
