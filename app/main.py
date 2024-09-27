@@ -13,6 +13,7 @@ from getpass import getpass
 from dotenv import load_dotenv
 load_dotenv()
 import uuid
+import base64
 
 import boto3
 from io import BytesIO
@@ -51,6 +52,13 @@ async def voicebot_endpoint(
 
         # Prepare the file as a tuple (filename, content)
         audio_data = (audio.filename, content)
+
+        # Convert the audio content to base64
+        audio_base64 = base64.b64encode(content).decode('utf-8')
+        print(f'Audio file in base64: {audio_base64}')
+
+        print(f'audio_data is {audio_data}')
+
 
         # 使用 Whisper 将语音转换为文本
         client = OpenAI()
