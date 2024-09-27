@@ -13,7 +13,7 @@ from getpass import getpass
 from dotenv import load_dotenv
 load_dotenv()
 import uuid
-import base64
+from pydub import AudioSegment
 
 import boto3
 from io import BytesIO
@@ -53,16 +53,19 @@ async def voicebot_endpoint(
         # Prepare the file as a tuple (filename, content)
         audio_data = (audio.filename, content)
 
-        # Convert the audio content to base64
-        # audio_base64 = base64.b64encode(content).decode('utf-8')
-        # print(f'Audio file in base64: {audio_base64}')
-
-        
         # Upload the audio file to S3
+
         s3 = boto3.client('s3')
         bucket_name = 'voicebot-text-to-speech'  # Replace with your actual S3 bucket name
-        file_name = f"input_{uuid.uuid4()}.wav"
-        s3.put_object(Bucket=bucket_name, Key=file_name, Body=content)
+        file_name = f"input_{uuid.uuid4()}.mp3"
+        
+        # Convert WAV to MP3
+        audio = AudioSegment.from_wav(BytesIO(content))
+        mp3_buffer = BytesIO()
+        audio.export(mp3_buffer, format="mp3")
+        mp3_buffer.seek(0)
+        
+        s3.upload_fileobj(mp3_buffer, bucket_name, file_name)
 
 
         # 使用 Whisper 将语音转换为文本
