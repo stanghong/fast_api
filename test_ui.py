@@ -35,32 +35,31 @@ def send_audio_file(filepath: str):
         response = requests.post(url, files=files)
     return response
 
-# Set the sample rate and duration
-fs = 44100  # Sample rate in Hz
-duration = 5  # Duration of recording in seconds
-# List available input devices
-print(sd.query_devices())
-sd.default.reset()
-print("Recording...") 
+import os
+from dotenv import load_dotenv, find_dotenv
+from openai import OpenAI
+import pydub
+
+_ = load_dotenv(find_dotenv())
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+client = OpenAI()
+# %%
+# Convert M4A to WAV in memory
+audio = pydub.AudioSegment.from_file("data/Audley St 3.m4a", format="m4a")
+audio.export("data/questions.wav", format="wav")
+wav_data = audio.export(format="wav").read()
+# %%
+transcription = client.audio.transcriptions.create(
+  model="whisper-1", 
+  file=("audio.wav", wav_data), 
+  response_format="text"
+)
+
+print(transcription)
 
 # %%
-# need to check the devices from print list make sure the name matches 
-sd.default.device = (1, 2) 
-# %%
-# Record audio
-myrecording = sd.rec(int(duration * fs), samplerate=fs, channels=1)
-sd.wait()  # Wait until recording is finished
-
-print("Recording complete.")
-# %%
-# Normalize and convert the recording to 16-bit data
-myrecording_int16 = np.int16(myrecording / np.max(np.abs(myrecording)) * 32767)
-
-# Save the recording as a WAV file
-write('./data/downloaded_audio.wav', fs, myrecording_int16)
-
-# %%
-audio_file_path = "./data/downloaded_audio.wav"
+audio_file_path = "./data/questions.wav"
 response = send_audio_file(audio_file_path)
 print(f"Response status code: {response.status_code}")
 print(f"Raw response content: {response.content.decode()}")

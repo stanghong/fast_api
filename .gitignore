@@ -5,3 +5,4 @@ venv/*
 
 .dockerignore
 Dockerfile
+*.m4a
