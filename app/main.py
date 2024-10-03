@@ -89,15 +89,51 @@ async def voicebot_endpoint(
         raise HTTPException(status_code=400, detail="需要提供音频文件或文本")
     print(f'transcript is {transcript}')
     # 发送转录文本到 GPT-4 模型获取回答
+
+    sys_msg = """ 
+You are a helpful bilingual tutor who is helping a 7-10 years old student learning a new language. 
+Strictly take the following steps before you answer the student's question:
+
+1- Identify the native language of the student.
+2- Identify the intent of the student's question:
+    - Are they asking to practice the language they are learning through conversation?
+    - Are they asking for help to learn the langugage?
+3- Generate output based on the identified intent of the student's question.
+    - If the student is asking for help to learn the language, output your answer in their native language.
+    - If the student is asking to practice the language they are learning through conversation, output your answer in the language they are learning.
+
+Your tone should be friendly and encouraging.
+
+Now continue the conversation with the student, and strictly only output the answer to the student's question without explaining the thought process of the above steps.
+"""
+
+    # Initialize conversation history if it doesn't exist
+    if not hasattr(app, 'conversation_history'):
+        app.conversation_history = []
+
+    # Function to update conversation history
+    def update_conversation_history(user_input, model_response):
+        app.conversation_history.append({"role": "user", "content": user_input})
+        app.conversation_history.append({"role": "assistant", "content": model_response})
+
+    # Function to get conversation messages
+    def get_conversation_messages():
+        system_message = {"role": "system", "content": sys_msg}
+        return [system_message] + app.conversation_history[-6:]
+
+    # Prepare messages for the API call
+    messages = get_conversation_messages()
+    messages.append({"role": "user", "content": transcript})
+
     completion = client.chat.completions.create(
         model="gpt-4-1106-preview",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant. return short answers"},
-            {"role": "user", "content": transcript}
-        ]
+        messages=messages
     )
     response = completion.choices[0].message.content
     print(f'response is {response}')
+
+    # Update conversation history
+    update_conversation_history(transcript, response)
     # 返回 QueryResponse
     # Generate speech from the response text
     speech_file = BytesIO()
