@@ -105,29 +105,28 @@ Strictly take the following steps before you answer the student's question:
 Your tone should be friendly and encouraging.
 
 Now continue the conversation with the student, and strictly only output the answer to the student's question without explaining the thought process of the above steps.
-
-following are few examples of the conversation history:
-student: 你能教我怎么用spanish说吗
-tutor: 当然可以，你想学什么？
-student: 基本的日常对话
-tutor: 当然可以，你想学什么？
-student:西班牙语中，你好怎么说？
-tutor: 你好，在西班牙语中，你好是“Hola”。
-student:西班牙语中，再见怎么说？
-tutor: 再见，在西班牙语中，再见是“Adiós”。
-student:西班牙语中，对不起怎么说？
-tutor: 对不起，在西班牙语中，对不起是“Perdón”。
-student:西班牙语中，谢谢怎么说？
-tutor: 谢谢，在西班牙语中，谢谢是“Gracias”。
-student:西班牙语中，你好吗？怎么说？
-tutor: 你好吗？在西班牙语中，你好吗？是“¿Cómo estás？”。
-student:西班牙语中，你叫什么名字？怎么说？
-tutor: 你叫什么名字？在西班牙语中，你叫什么名字？是“¿Cómo te llamas？”。
 """
 
     # Initialize conversation history if it doesn't exist
     if not hasattr(app, 'conversation_history'):
-        app.conversation_history = []
+        app.conversation_history = [
+            {"role": "user", "content": "你能教我怎么用spanish说吗"},
+            {"role": "assistant", "content": "当然可以，你想学什么？"},
+            {"role": "user", "content": "基本的日常对话"},
+            {"role": "assistant", "content": "当然可以，你想学什么？"},
+            {"role": "user", "content": "西班牙语中，你好怎么说？"},
+            {"role": "assistant", "content": "你好，在西班牙语中，你好是"Hola"。"},
+            {"role": "user", "content": "西班牙语中，再见怎么说？"},
+            {"role": "assistant", "content": "再见，在西班牙语中，再见是"Adiós"。"},
+            {"role": "user", "content": "西班牙语中，对不起怎么说？"},
+            {"role": "assistant", "content": "对不起，在西班牙语中，对不起是"Perdón"。"},
+            {"role": "user", "content": "西班牙语中，谢谢怎么说？"},
+            {"role": "assistant", "content": "谢谢，在西班牙语中，谢谢是"Gracias"。"},
+            {"role": "user", "content": "西班牙语中，你好吗？怎么说？"},
+            {"role": "assistant", "content": "你好吗？在西班牙语中，你好吗？是"¿Cómo estás？"。"},
+            {"role": "user", "content": "西班牙语中，你叫什么名字？怎么说？"},
+            {"role": "assistant", "content": "你叫什么名字？在西班牙语中，你叫什么名字？是"¿Cómo te llamas？"。"},
+        ]
 
     # Function to update conversation history
     def update_conversation_history(user_input, model_response):
@@ -137,12 +136,12 @@ tutor: 你叫什么名字？在西班牙语中，你叫什么名字？是“¿C�
     # Function to get conversation messages
     def get_conversation_messages():
         system_message = {"role": "system", "content": sys_msg}
-        return [system_message] + app.conversation_history[-6:]
+        return [system_message] + app.conversation_history[-6:] + [{"role": "user", "content": transcript}]
 
     # Prepare messages for the API call
     messages = get_conversation_messages()
-    messages.append({"role": "user", "content": transcript})
 
+    client = OpenAI()
     completion = client.chat.completions.create(
         model="gpt-4-1106-preview",
         messages=messages
