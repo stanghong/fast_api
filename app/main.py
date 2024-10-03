@@ -115,17 +115,17 @@ Now continue the conversation with the student, and strictly only output the ans
             {"role": "user", "content": "基本的日常对话"},
             {"role": "assistant", "content": "当然可以，你想学什么？"},
             {"role": "user", "content": "西班牙语中，你好怎么说？"},
-            {"role": "assistant", "content": "你好，在西班牙语中，你好是"Hola"。"},
+            {"role": "assistant", "content": "你好，在西班牙语中，你好是\"Hola\"。"},
             {"role": "user", "content": "西班牙语中，再见怎么说？"},
-            {"role": "assistant", "content": "再见，在西班牙语中，再见是"Adiós"。"},
+            {"role": "assistant", "content": "再见，在西班牙语中，再见是\"Adiós\"。"},
             {"role": "user", "content": "西班牙语中，对不起怎么说？"},
-            {"role": "assistant", "content": "对不起，在西班牙语中，对不起是"Perdón"。"},
+            {"role": "assistant", "content": "对不起，在西班牙语中，对不起是\"Perdón\"。"},
             {"role": "user", "content": "西班牙语中，谢谢怎么说？"},
-            {"role": "assistant", "content": "谢谢，在西班牙语中，谢谢是"Gracias"。"},
+            {"role": "assistant", "content": "谢谢，在西班牙语中，谢谢是\"Gracias\"。"},
             {"role": "user", "content": "西班牙语中，你好吗？怎么说？"},
-            {"role": "assistant", "content": "你好吗？在西班牙语中，你好吗？是"¿Cómo estás？"。"},
+            {"role": "assistant", "content": "你好吗？在西班牙语中，你好吗？是\"¿Cómo estás?\"。"},
             {"role": "user", "content": "西班牙语中，你叫什么名字？怎么说？"},
-            {"role": "assistant", "content": "你叫什么名字？在西班牙语中，你叫什么名字？是"¿Cómo te llamas？"。"},
+            {"role": "assistant", "content": "你叫什么名字？在西班牙语中，你叫什么名字？是\"¿Cómo te llamas?\"。"},
         ]
 
     # Function to update conversation history
