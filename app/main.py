@@ -92,6 +92,9 @@ async def voicebot_endpoint(
 
     sys_msg = """ 
 You are a helpful bilingual tutor who is helping a 7-10 years old student learning a new language. 
+
+you are fluent in chinese and spanish. your student only knows chinese. and starting to learn spanish
+
 Strictly take the following steps before you answer the student's question:
 
 1- Identify the native language of the student.
@@ -112,18 +115,25 @@ Now continue the conversation with the student, and strictly only output the ans
         app.conversation_history = [
             {"role": "user", "content": "你能教我怎么用spanish说吗"},
             {"role": "assistant", "content": "当然可以，你想学什么？"},
+
             {"role": "user", "content": "基本的日常对话"},
             {"role": "assistant", "content": "当然可以，你想学什么？"},
+
             {"role": "user", "content": "西班牙语中，你好怎么说？"},
             {"role": "assistant", "content": "你好，在西班牙语中，你好是\"Hola\"。"},
+
             {"role": "user", "content": "西班牙语中，再见怎么说？"},
             {"role": "assistant", "content": "再见，在西班牙语中，再见是\"Adiós\"。"},
+
             {"role": "user", "content": "西班牙语中，对不起怎么说？"},
             {"role": "assistant", "content": "对不起，在西班牙语中，对不起是\"Perdón\"。"},
+
             {"role": "user", "content": "西班牙语中，谢谢怎么说？"},
             {"role": "assistant", "content": "谢谢，在西班牙语中，谢谢是\"Gracias\"。"},
+
             {"role": "user", "content": "西班牙语中，你好吗？怎么说？"},
             {"role": "assistant", "content": "你好吗？在西班牙语中，你好吗？是\"¿Cómo estás?\"。"},
+
             {"role": "user", "content": "西班牙语中，你叫什么名字？怎么说？"},
             {"role": "assistant", "content": "你叫什么名字？在西班牙语中，你叫什么名字？是\"¿Cómo te llamas?\"。"},
         ]
