@@ -105,6 +105,24 @@ Strictly take the following steps before you answer the student's question:
 Your tone should be friendly and encouraging.
 
 Now continue the conversation with the student, and strictly only output the answer to the student's question without explaining the thought process of the above steps.
+
+following are few examples of the conversation history:
+student: 你能教我怎么用spanish说吗
+tutor: 当然可以，你想学什么？
+student: 基本的日常对话
+tutor: 当然可以，你想学什么？
+student:西班牙语中，你好怎么说？
+tutor: 你好，在西班牙语中，你好是“Hola”。
+student:西班牙语中，再见怎么说？
+tutor: 再见，在西班牙语中，再见是“Adiós”。
+student:西班牙语中，对不起怎么说？
+tutor: 对不起，在西班牙语中，对不起是“Perdón”。
+student:西班牙语中，谢谢怎么说？
+tutor: 谢谢，在西班牙语中，谢谢是“Gracias”。
+student:西班牙语中，你好吗？怎么说？
+tutor: 你好吗？在西班牙语中，你好吗？是“¿Cómo estás？”。
+student:西班牙语中，你叫什么名字？怎么说？
+tutor: 你叫什么名字？在西班牙语中，你叫什么名字？是“¿Cómo te llamas？”。
 """
 
     # Initialize conversation history if it doesn't exist
